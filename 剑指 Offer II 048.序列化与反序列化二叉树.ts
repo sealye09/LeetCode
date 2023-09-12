@@ -24,13 +24,34 @@
  * Encodes a tree to a single string.
  */
 function serialize(root: TreeNode | null): string {
+  if (!root) return "";
   return bfs(root);
 }
 
 /*
  * Decodes your encoded data to tree.
  */
-function deserialize(data: string): TreeNode | null {}
+function deserialize(data: string): TreeNode | null {
+  if (!data) return null;
+  const arr = data.split(",");
+  const root = new TreeNode(+arr[0]);
+  const queue: TreeNode[] = [root];
+  let i = 1;
+  while (i < arr.length) {
+    const node = queue.shift()!;
+    const left = arr[i++];
+    const right = arr[i++];
+    if (left !== "null") {
+      node.left = new TreeNode(+left);
+      queue.push(node.left);
+    }
+    if (right !== "null") {
+      node.right = new TreeNode(+right);
+      queue.push(node.right);
+    }
+  }
+  return root;
+}
 
 function bfs(root: TreeNode | null): string {
   const res: string[] = [];
